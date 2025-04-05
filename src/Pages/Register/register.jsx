@@ -2,16 +2,40 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Container, Card, Image, Form, Button } from 'react-bootstrap';
-
+import axios from 'axios';
 const Register = () => {
     const [phone, setPhone] = useState('');
-        const [password, setPassword] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     
-        const handleSubmit = (e) => {
+        const handleSubmit = async (e) => {
             e.preventDefault();
-            // Xử lý logic đăng nhập ở đây
-            console.log('Phone:', phone);
-            console.log('Password:', password);
+            if (password !== confirmPassword) {
+            alert('Mật khẩu và xác nhận mật khẩu không khớp!');
+            return;
+            }
+
+            try {
+            const response = await axios.post('http://localhost:3000/auth/register', {
+                phone,
+                username,
+                email,
+                password,
+            });
+
+            if (response.data.success) {
+                alert('Đăng ký thành công!');
+                // Chuyển hướng đến trang đăng nhập hoặc trang khác
+                window.location.href = './login';
+            } else {
+                alert(response.data.message || 'Đăng ký thất bại!');
+            }
+            } catch (error) {
+            console.error('Đã xảy ra lỗi:', error);
+            alert('Đã xảy ra lỗi trong quá trình đăng ký!');
+            }
         };
 
     return (
@@ -25,6 +49,14 @@ const Register = () => {
                     </div>
 
                     <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3 " controlId="formUserName d-flex">
+                            <Form.Label className= 'bi bi-telephone text-primary'> UserName</Form.Label>
+                            <Form.Control  type="username"  placeholder="Nhập UserName" value={username}onChange={(e) => setUsername(e.target.value)} required/>
+                        </Form.Group>
+                        <Form.Group className="mb-3 " controlId="formEmail d-flex">
+                            <Form.Label className= 'bi bi-telephone text-primary'> Email</Form.Label>
+                            <Form.Control  type="email"  placeholder="Nhập Email" value={email}onChange={(e) => setEmail(e.target.value)} required/>
+                        </Form.Group>
                        
                         <Form.Group className="mb-3 " controlId="formPhone d-flex">
                             <Form.Label className= 'bi bi-telephone text-primary'> Số Điện Thoại</Form.Label>
@@ -37,9 +69,9 @@ const Register = () => {
                             <Form.Control type="password"  placeholder="Nhập mật khẩu"  value={password}onChange={(e) => setPassword(e.target.value)}required />
                         </Form.Group>
                         
-                        <Form.Group className="mb-3" controlId="formPassword">
+                        <Form.Group className="mb-3" controlId="formConFirmPassword">
                             <Form.Label className= 'bi bi-shield-lock text-primary'> Nhập Lại Mật Khẩu</Form.Label>
-                            <Form.Control type="password"  placeholder="Nhập Lại Mật Khẩu"  value={password}onChange={(e) => setPassword(e.target.value)}required />
+                            <Form.Control type="password"  placeholder="Nhập Lại Mật Khẩu"  value={confirmPassword}onChange={(e) => setConfirmPassword(e.target.value)}required />
                         </Form.Group>
                         
                         <Button  variant="primary" type="submit"  className="w-100 mb-3 btn btn-primary" style={{ backgroundColor: '#00A2FF', border: 'none' }}>
