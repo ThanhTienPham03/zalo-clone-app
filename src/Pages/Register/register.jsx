@@ -10,34 +10,43 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     
-        const handleSubmit = async (e) => {
-            e.preventDefault();
-            if (password !== confirmPassword) {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (password !== confirmPassword) {
             alert('Mật khẩu và xác nhận mật khẩu không khớp!');
             return;
-            }
-
-            try {
+        }
+    
+        try {
             const response = await axios.post('http://localhost:3000/auth/register', {
                 phone,
                 username,
                 email,
                 password,
             });
-
+    
             if (response.data.success) {
                 alert('Đăng ký thành công!');
-                // Chuyển hướng đến trang đăng nhập hoặc trang khác
                 window.location.href = './login';
             } else {
                 alert(response.data.message || 'Đăng ký thất bại!');
             }
-            } catch (error) {
+        } catch (error) {
             console.error('Đã xảy ra lỗi:', error);
-            alert('Đã xảy ra lỗi trong quá trình đăng ký!');
+    
+            // Xử lý lỗi chi tiết
+            if (error.response) {
+                // Lỗi từ server (có phản hồi)
+                alert(`Lỗi từ server: ${error.response.data.message || 'Đăng ký thất bại!'}`);
+            } else if (error.request) {
+                // Không nhận được phản hồi từ server
+                alert('Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng hoặc server!');
+            } else {
+                // Lỗi khác
+                alert(`Đã xảy ra lỗi: ${error.message}`);
             }
-        };
-
+        }
+    };
     return (
         <div style={{ backgroundColor: '#e8f3ff', minHeight: '100vh' }}>
             
