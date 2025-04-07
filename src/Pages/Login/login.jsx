@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { Container, Card, Image, Form, Button } from 'react-bootstrap';
+import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
+import { useDispatch } from 'react-redux'; // Import useDispatch
+import { setUser } from "../../redux/store/userSlice"; // Import setUser từ userSlice
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [message, setMessage] = useState(null);
+    const dispatch = useDispatch(); // Khởi tạo dispatch
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -15,21 +19,22 @@ const Login = () => {
                 username,
                 password,
             });
-        
+
             if (response.status === 200) {
+                setMessage({ type: 'success', text: 'Đăng nhập thành công!' });
+                dispatch(setUser(response.data.user)); // Lưu thông tin user vào Redux
                 console.log('Login successful:', response.data);
-                // Handle successful login (e.g., save token, redirect)
             } else {
+                setMessage({ type: 'danger', text: 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.' });
                 console.error('Login failed:', response.statusText);
-                alert('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
             }
         } catch (error) {
             if (error.code === 'ERR_NETWORK') {
+                setMessage({ type: 'danger', text: 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau.' });
                 console.error('Network error:', error.message);
-                alert('Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau.');
             } else {
+                setMessage({ type: 'danger', text: 'Đã xảy ra lỗi. Vui lòng thử lại sau.' });
                 console.error('Error during login:', error);
-                alert('Đã xảy ra lỗi. Vui lòng thử lại sau.');
             }
         }
     };
@@ -43,6 +48,11 @@ const Login = () => {
             </div>
             <Container className="d-flex justify-content-center align-items-center mt-3">
                 <Card style={{ width: '400px' }} className="p-4 shadow">
+                    {message && (
+                        <Alert variant={message.type} className="text-center">
+                            {message.text}
+                        </Alert>
+                    )}
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="formPhone">
                             <Form.Label className="bi bi-person-circle text-primary"> UserName</Form.Label>

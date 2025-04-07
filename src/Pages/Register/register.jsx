@@ -23,8 +23,9 @@ const Register = () => {
                 username,
                 email,
                 password,
+                
             });
-    
+            console.log('Payload:', { phone, username, email, password });
             if (response.data.success) {
                 alert('Đăng ký thành công!');
                 window.location.href = './login';
