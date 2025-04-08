@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { useDispatch } from 'react-redux'; // Import useDispatch
-import { setUser } from "../../redux/store/userSlice"; // Import setUser từ userSlice
-
+import { setUser } from "../../redux/userSlice"; // Import setUser từ userSlice
+import { AuthContext } from '../../context/AuthContext'; // Import AuthContext
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { loginSuccess } from '../../redux/authSlice';
 const Login = () => {
+    const { login } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const [credentials, setCredentials] = useState({ username: '', password: '' });
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState(null);
@@ -22,7 +27,10 @@ const Login = () => {
 
             if (response.status === 200) {
                 setMessage({ type: 'success', text: 'Đăng nhập thành công!' });
-                dispatch(setUser(response.data.user)); // Lưu thông tin user vào Redux
+                dispatch(loginSuccess({
+                    username: response.username, 
+                    accessToken: response.tokens.accessToken // Lưu accessToken vào Redux
+                })); // Lưu thông tin đăng nhập vào Redux
                 console.log('Login successful:', response.data);
             } else {
                 setMessage({ type: 'danger', text: 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.' });
@@ -37,6 +45,9 @@ const Login = () => {
                 console.error('Error during login:', error);
             }
         }
+        const userData = { username: credentials.username }; // Thông tin người dùng
+        login(userData); // Lưu thông tin vào AuthContext
+        navigate('/chat');
     };
 
     return (

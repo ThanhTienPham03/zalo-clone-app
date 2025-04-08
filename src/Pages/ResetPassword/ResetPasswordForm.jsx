@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Container, Card, Image, Form, Button } from 'react-bootstrap';
 
-const Forgetpassword = () => {
+const ResetPassword = () => {
 
         const [email, setEmail] = useState('');
         const [password, setPassword] = useState('');
@@ -23,19 +23,23 @@ const Forgetpassword = () => {
                 <Card style={{ width: '400px' }} className="p-4 shadow">
                     {/* Logo Zalo */}
                     <div className="text-center mb-4  justify-content-center space-between align-items-center">
-                        <h5 className= 'text-primary' > Đổi mật khẩu</h5>
+                        <h5 className= 'text-primary'> Đổi mật khẩu</h5>
                     </div>
 
                     <Form onSubmit={handleSubmit}>
                        
-                        <Form.Group className="mb-3 " controlId="formEmail d-flex">
-                            <Form.Label className= 'bi bi-envelope text-primary'> Email</Form.Label>
-                            <Form.Control  type="tel"  placeholder="Nhập Email" value={email}onChange={(e) => setEmail(e.target.value)} required/>
+                        <Form.Group className="mb-3 " controlId="formPassword d-flex">
+                            <Form.Label className= 'bi bi-lock text-primary'> Mật khẩu mới </Form.Label>
+                            <Form.Control  type="tel"  placeholder="Nhập mật khẩu mới" value={password}onChange={(e) => setPassword(e.target.value)} required/>
+                        </Form.Group>
+                        <Form.Group className="mb-3 " controlId="formConfirmPassword d-flex">
+                            <Form.Label className= 'bi bi-lock text-primary'> Xác nhận mật khẩu </Form.Label>
+                            <Form.Control  type="tel"  placeholder="Nhập lại mật khẩu mới" value={password}onChange={(e) => setPassword(e.target.value)} required/>
                         </Form.Group>
 
                         
                         <Button  variant="primary" type="submit"  className="w-100 mb-3" style={{ backgroundColor: '#00A2FF', border: 'none' }}>
-                            Nhận mã OTP
+                            Đổi mật khẩu
                         </Button>
 
                        
@@ -54,4 +58,4 @@ const Forgetpassword = () => {
     );
 }
 
-export default Forgetpassword;
+export default ResetPassword;

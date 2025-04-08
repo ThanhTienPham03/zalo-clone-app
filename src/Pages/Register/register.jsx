@@ -23,8 +23,10 @@ const Register = () => {
                 username,
                 email,
                 password,
-                
-            });
+            }, {
+                withCredentials: true,
+            }
+        );
             console.log('Payload:', { phone, username, email, password });
             if (response.data.success) {
                 alert('Đăng ký thành công!');
@@ -47,6 +49,7 @@ const Register = () => {
                 alert(`Đã xảy ra lỗi: ${error.message}`);
             }
         }
+
     };
     return (
         <div style={{ backgroundColor: '#e8f3ff', minHeight: '100vh' }}>
@@ -55,16 +58,16 @@ const Register = () => {
                 <Card style={{ width: '400px' }} className="p-4 shadow">
                     {/* Logo Zalo */}
                     <div className="text-center mb-4  justify-content-center space-between align-items-center">
-                        <h4 className='text-primary'> Đăng ký Zalo</h4>
+                        <h4 className='text-primary'> Đăng ký</h4>
                     </div>
 
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3 " controlId="formUserName d-flex">
-                            <Form.Label className= 'bi bi-telephone text-primary'> UserName</Form.Label>
+                            <Form.Label className= 'bi bi-person-circle text-primary'> UserName</Form.Label>
                             <Form.Control  type="username"  placeholder="Nhập UserName" value={username}onChange={(e) => setUsername(e.target.value)} required/>
                         </Form.Group>
                         <Form.Group className="mb-3 " controlId="formEmail d-flex">
-                            <Form.Label className= 'bi bi-telephone text-primary'> Email</Form.Label>
+                            <Form.Label className= 'bi bi-envelope text-primary'> Email</Form.Label>
                             <Form.Control  type="email"  placeholder="Nhập Email" value={email}onChange={(e) => setEmail(e.target.value)} required/>
                         </Form.Group>
                        
