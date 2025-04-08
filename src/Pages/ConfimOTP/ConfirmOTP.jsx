@@ -26,7 +26,7 @@ const ConfirmOTP = () => {
                         <Form.Group className="mb-3" controlId="formOTP">
                             <Form.Label className="text-primary">Mã OTP</Form.Label>
                             <Form.Control
-                                type="tel"
+                                type="otp"
                                 placeholder="Nhập mã OTP"
                                 value={otp}
                                 onChange={(e) => setOtp(e.target.value)}

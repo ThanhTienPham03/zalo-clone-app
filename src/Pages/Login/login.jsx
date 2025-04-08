@@ -27,11 +27,13 @@ const Login = () => {
 
             if (response.status === 200) {
                 setMessage({ type: 'success', text: 'Đăng nhập thành công!' });
+                const { accessToken } = response.data;
                 dispatch(loginSuccess({
-                    username: response.username, 
-                    accessToken: response.tokens.accessToken // Lưu accessToken vào Redux
+                    username,
+                    accessToken, // Lưu accessToken vào Redux
                 })); // Lưu thông tin đăng nhập vào Redux
-                console.log('Login successful:', response.data);
+                login({ username }); // Lưu thông tin vào AuthContext
+                // navigate('/chat'); // Điều hướng đến trang chat
             } else {
                 setMessage({ type: 'danger', text: 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.' });
                 console.error('Login failed:', response.statusText);
@@ -45,9 +47,6 @@ const Login = () => {
                 console.error('Error during login:', error);
             }
         }
-        const userData = { username: credentials.username }; // Thông tin người dùng
-        login(userData); // Lưu thông tin vào AuthContext
-        navigate('/chat');
     };
 
     return (
