@@ -65,7 +65,7 @@ const Register = () => {
             return;
         }
     
-        if (!/^\S+@\S+\.\S+$/.test(email)) {
+        if (!/\S+@\S+\.\S+/.test(email)) {
             alert('Email không hợp lệ!');
             return;
         }
@@ -92,9 +92,9 @@ const Register = () => {
             });
     
             console.log('Server response:', response.data);
-            if (response.data.success) {
+            if (response.data.success || response.data.message === 'Đăng ký thành công') {
                 alert('Đăng ký thành công!');
-                window.location.href = '/login';
+                navigate('/login'); 
             } else {
                 throw new Error(response.data.message || 'Xác thực OTP thất bại!');
             }
