@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Container, Card, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
     const [step, setStep] = useState(1); // Step 1: Register, Step 2: OTP Verification
@@ -12,6 +13,7 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [otp, setOtp] = useState('');
+    const navigate = useNavigate(); // Thêm hook useNavigate
 
     const SUCCESS_MESSAGES = [
         "OTP sent to email",
@@ -206,6 +208,9 @@ const Register = () => {
                                     Đăng Ký
                                 </Button>
                             </Form>
+                            <a href="./login" className="bi bi-arrow-return-left d-block mb-2" style={{ color: '#00A2FF' }}>
+                                Quay lại
+                            </a>
                         </>
                     ) : (
                         <>
